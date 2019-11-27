@@ -1,0 +1,4 @@
+---
+- src: supertarto.apache
+- src: supertarto.mariadb
+- src: supertarto.php

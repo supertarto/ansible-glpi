@@ -1,2 +1,26 @@
 ---
+glpi_version: 9.3.0
+glpi_version_package: glpi-9.3.tgz
 
+glpi_update: False
+glpi_download_url: "https://github.com/glpi-project/glpi/releases/download/{{ glpi_version }}/{{ glpi_version_package }}"
+
+glpi_web_owner: "www-data"
+glpi_web_group: "www-data"
+glpi_system_user: "root"
+glpi_system_group: "root"
+
+glpi_install_path: /var/www/
+glpi_config_dir: "/etc/glpi/"
+glpi_data_dir: "/var/lib/glpi"
+glpi_log_dir: "/var/log/glpi"
+
+glpi_plugins_dl_addr:
+  - https://github.com/fusioninventory/fusioninventory-for-glpi/archive/glpi9.4+2.1.zip
+
+glpi_db_host: "localhost"
+glpi_db_port: "3306"
+glpi_db_name: "glpi"
+glpi_db_user: "glpi"
+glpi_db_password: "changeit!"
+glpi_lang: "fr_FR"

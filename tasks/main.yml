@@ -1,2 +1,107 @@
 ---
+- name: Check if GLPI is already installed
+  stat:
+    path: "{{ glpi_install_path }}"
+  register: glpiinstalled
 
+- name: Download and extract GLPI
+  unarchive:
+    src: "{{ glpi_download_url }}"
+    remote_src: true
+    dest: "{{ glpi_install_path }}"
+    owner: "{{ glpi_web_owner }}"
+    group: "{{ glpi_web_group }}"
+    validate_certs: false
+  when: not glpiinstalled.stat.exists or glpi_update
+
+- name: Create custom configuration directory and copy /config
+  copy:
+    src: "{{ glpi_install_path }}/glpi/config/"
+    dest: "{{ glpi_config_dir }}"
+    owner: "{{ glpi_system_user }}"
+    group: "{{ glpi_system_group }}"
+    mode: "0640"
+    remote_src: true
+
+- name: Delete old config directory
+  file:
+    path: "{{ glpi_install_path }}/glpi/config/"
+    state: absent
+
+- name: Create custom data directory and copy /files
+  copy:
+    src: "{{ glpi_install_path }}/glpi/files/"
+    dest: "{{ glpi_data_dir }}"
+    owner: "{{ glpi_system_user }}"
+    group: "{{ glpi_system_group }}"
+    mode: "0640"
+    remote_src: true
+
+- name: Delete old data directory
+  file:
+    path: "{{ glpi_install_path }}/glpi/files/"
+    state: absent
+
+- name: Create custom log directory
+  file:
+    path: "{{ glpi_log_dir }}"
+    state: directory
+    owner: "{{ glpi_system_user }}"
+    group: "{{ glpi_system_group }}"
+    mode: "0640"
+
+- name: Create inc/downstream.php
+  template:
+    src: downstream.php.j2
+    dest: "{{ glpi_install_path }}/glpi/inc/downstream.php"
+    owner: "{{ glpi_web_owner }}"
+    group: "{{ glpi_web_group }}"
+    mode: "0640"
+
+- name: Create local_define.php
+  template:
+    src: local_define.php.j2
+    dest: "{{ glpi_config_dir }}/local_define.php"
+    owner: "{{ glpi_system_user }}"
+    group: "{{ glpi_system_group }}"
+    mode: "0640"
+
+- name: Configure and install database in GLPI
+  command:
+    cmd: >
+    "php bin/console db:install -H {{ glpi_db_host }} -P {{ glpi_db_port }} -d {{ glpi_db_name }}\
+    -u {{ glpi_db_user }} -p {{ glpi_db_password }} -L {{ glpi_lang }}"
+    chdir: "{{ glpi_install_path }}/glpi/"
+
+- name: Update database
+  command:
+    cmd: php bin/console db:update
+    chdir: "{{ glpi_install_path }}/glpi/"
+  when: glpi_update
+
+- name: Delete /install directory
+  file:
+    path: "{{ glpi_install_path }}/glpi/install/"
+    state: absent
+  
+- name: Copy plugins
+  unarchive:
+    src: "{{ glpi_plugins_dl_addr }}"
+    dest: "{{ glpi_install_path }}/glpi/plugins"
+    owner: "{{ glpi_web_owner }}"
+    group: "{{ glpi_web_group }}"
+    mode: "0640"
+    remote_src: true
+  when: glpi_plugins_dl_addr
+
+
+- name: Changement des droits sur les dossiers de GLPI
+  command: "find {{ glpi_install_path }}/glpi/ -type d -exec chmod -c 0750 {} \;"
+  register: chmod_result
+  changed_when: "chmod_result.stdout != \"\""
+
+
+- name: Changement des droits sur les fichiers de GLPI
+  command: "find {{ glpi_install_path }}/glpi/ -type f -exec chmod -c 0640 {} \;"
+  register: chmod_result
+  changed_when: "chmod_result.stdout != \"\""

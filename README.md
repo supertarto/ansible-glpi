@@ -1,5 +1,5 @@
-# ansible-role-template
-
+# Ansible GLPI
+[![Build Status](https://travis-ci.org/supertarto/ansible-glpi.svg?branch=master)](https://travis-ci.org/supertarto/ansible-glpi)
 
 ## Tested plateform
 * Debian 9 (Stretch)
@@ -11,7 +11,7 @@
 ## Examples
 ## Installation
 ```
-ansible-galaxy install supertarto.
+ansible-galaxy install supertarto.glpi
 ```
 ## License
 GPL V3.0
