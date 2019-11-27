@@ -26,30 +26,24 @@
     apache_create_vhosts: true
     apache_vhosts_filename: "glpi.conf"
     apache_vhost_config:
-        - listen_ip: "*"
-          listen_port: 80
-          server_name: host1
-          custom_param: |
-            Redirect / https://host1
+      - listen_ip: "*"
+        listen_port: 80
+        server_name: host1
+        documentroot: "/var/www/glpi"
+        serveradmin: admin@localhost
+        custom_param: |
+          ProxyRequests Off
+          ProxyPreserveHost On
+          ErrorLog ${APACHE_LOG_DIR}/error.log
+          CustomLog ${APACHE_LOG_DIR}/access.log combined
+          LogLevel warn
+        directory:
+          - path: "/var/www/glpi"
+            config: |
+              AllowOverride All
+              Order deny,allow
+              allow from all
 
-        - listen_ip: "*"
-            listen_port: 443
-            server_name: host1
-            serveralias: alias1
-            documentroot: "/var/www/glpi"
-            serveradmin: admin@localhost
-            custom_param: |
-                ProxyRequests Off
-                ProxyPreserveHost On
-                ErrorLog ${APACHE_LOG_DIR}/error.log
-                CustomLog ${APACHE_LOG_DIR}/access.log combined
-                LogLevel warn
-            directory:
-                - path: "/var/www/glpi"
-                  config: |
-                    AllowOverride All
-                    Order deny,allow
-                    allow from all
     mariadb_use_dump_script: false
     mariadb_databases:
       - name: "{{ glpi_db_name }}"
@@ -72,7 +66,7 @@
       - php7.3-mbstring
       - php7.3-xml
       - php7.3-cli
-      - php7.3-xmlrpc    
+      - php7.3-xmlrpc
     {% else %}
       - php7.0
       - php7.0-gd
@@ -84,5 +78,4 @@
       - php7.0-mbstring
       - php7.0-xml
       - php7.0-cli
-      - php7.0-xmlrpc  
-
+      - php7.0-xmlrpc

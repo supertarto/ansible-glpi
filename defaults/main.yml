@@ -2,7 +2,7 @@
 glpi_version: 9.3.0
 glpi_version_package: glpi-9.3.tgz
 
-glpi_update: False
+glpi_update: false
 glpi_download_url: "https://github.com/glpi-project/glpi/releases/download/{{ glpi_version }}/{{ glpi_version_package }}"
 
 glpi_web_owner: "www-data"

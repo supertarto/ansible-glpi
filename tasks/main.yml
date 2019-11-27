@@ -69,8 +69,7 @@
 - name: Configure and install database in GLPI
   command:
     cmd: >
-    "php bin/console db:install -H {{ glpi_db_host }} -P {{ glpi_db_port }} -d {{ glpi_db_name }}\
-    -u {{ glpi_db_user }} -p {{ glpi_db_password }} -L {{ glpi_lang }}"
+    "php bin/console db:install -H {{ glpi_db_host }} -P {{ glpi_db_port }} -d {{ glpi_db_name }} -u {{ glpi_db_user }} -p {{ glpi_db_password }} -L {{ glpi_lang }}"
     chdir: "{{ glpi_install_path }}/glpi/"
 
 - name: Update database
@@ -83,7 +82,7 @@
   file:
     path: "{{ glpi_install_path }}/glpi/install/"
     state: absent
-  
+
 - name: Copy plugins
   unarchive:
     src: "{{ glpi_plugins_dl_addr }}"
