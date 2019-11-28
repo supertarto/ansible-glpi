@@ -19,6 +19,14 @@
     path: "{{ glpi_install_path }}/glpi/config/"
   register: glpi_config_exists
 
+- name: Custom configuration directory
+  file:
+    path: "{{ glpi_config_dir }}"
+    state: directory
+    owner: "{{ glpi_system_user }}"
+    group: "{{ glpi_system_group }}"
+    mode: "0640"
+
 - name: Create custom configuration directory and copy /config (if exists)
   copy:
     src: "{{ glpi_install_path }}/glpi/config/"
@@ -28,15 +36,6 @@
     mode: "0640"
     remote_src: true
   when: glpi_config_exists.stat.exists
-
-- name: Custom configuration directory (if /config don't exists)
-  file:
-    path: "{{ glpi_config_dir }}"
-    state: directory
-    owner: "{{ glpi_system_user }}"
-    group: "{{ glpi_system_group }}"
-    mode: "0640"
-  when: not glpi_config_exists.stat.exists
 
 - name: Delete old config directory
   file:
@@ -48,6 +47,14 @@
     path: "{{ glpi_install_path }}/glpi/config/"
   register: glpi_files_exists
 
+- name: Custom data directory (if /files don't exists)
+  file:
+    path: "{{ glpi_data_dir }}"
+    state: directory
+    owner: "{{ glpi_system_user }}"
+    group: "{{ glpi_system_group }}"
+    mode: "0640"
+
 - name: Create custom data directory and copy /files (if exists)
   copy:
     src: "{{ glpi_install_path }}/glpi/files/"
@@ -57,15 +64,6 @@
     mode: "0640"
     remote_src: true
   when: glpi_files_exists.stat.exists
-
-- name: Custom data directory (if /files don't exists)
-  file:
-    path: "{{ glpi_data_dir }}"
-    state: directory
-    owner: "{{ glpi_system_user }}"
-    group: "{{ glpi_system_group }}"
-    mode: "0640"
-  when: not glpi_files_exists.stat.exists
 
 - name: Delete old data directory
   file:
