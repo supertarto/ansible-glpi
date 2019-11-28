@@ -10,7 +10,7 @@ glpi_web_group: "www-data"
 glpi_system_user: "root"
 glpi_system_group: "root"
 
-glpi_install_path: /var/www/
+glpi_install_path: /var/www
 glpi_config_dir: "/etc/glpi/"
 glpi_data_dir: "/var/lib/glpi"
 glpi_log_dir: "/var/log/glpi"
