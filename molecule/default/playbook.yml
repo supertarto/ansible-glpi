@@ -30,7 +30,7 @@
           - php7.3-xml
           - php7.3-cli
           - php7.3-xmlrpc
-      when: ansible_distribution == 'Debian' and ansible_distribution_major_version == '10'
+      when: ansible_distribution == 'Debian' and ansible_distribution_release == 'buster'
 
     - name: set php_packages (Debian 9)
       set_fact:
@@ -46,7 +46,7 @@
           - php7.0-xml
           - php7.0-cli
           - php7.0-xmlrpc
-      when: ansible_distribution == 'Debian' and ansible_distribution_major_version == '9'
+      when: ansible_distribution == 'Debian' and ansible_distribution_release == 'stretch
 
   vars:
     glpi_db_host: "localhost"
