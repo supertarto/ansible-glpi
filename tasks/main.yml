@@ -94,14 +94,15 @@
     remote_src: true
   when: glpi_plugins_dl_addr
 
-
 - name: Changement des droits sur les dossiers de GLPI
-  command: "find {{ glpi_install_path }}/glpi/ -type d -exec chmod -c 0750 {} \;"
+  command: 
+    cmd: "find {{ glpi_install_path }}/glpi/ -type d -exec chmod -c 0750 {} \;"
   register: chmod_result
   changed_when: "chmod_result.stdout != \"\""
 
 
 - name: Changement des droits sur les fichiers de GLPI
-  command: "find {{ glpi_install_path }}/glpi/ -type f -exec chmod -c 0640 {} \;"
+  command: 
+    cmd: "find {{ glpi_install_path }}/glpi/ -type f -exec chmod -c 0640 {} \;"
   register: chmod_result
   changed_when: "chmod_result.stdout != \"\""
