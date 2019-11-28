@@ -1,7 +1,7 @@
 ---
 - name: Check if GLPI is already installed
   stat:
-    path: "{{ glpi_install_path }}"
+    path: "{{ glpi_install_path }}/glpi"
   register: glpiinstalled
 
 - name: Download and extract GLPI
