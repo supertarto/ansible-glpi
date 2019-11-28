@@ -36,7 +36,7 @@
     owner: "{{ glpi_system_user }}"
     group: "{{ glpi_system_group }}"
     mode: "0640"
-  when: not glpi_config_exists.stat.exists  
+  when: not glpi_config_exists.stat.exists
 
 - name: Delete old config directory
   file:
