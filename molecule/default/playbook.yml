@@ -55,7 +55,7 @@
         priv: "{{ glpi_db_name }}.*:SELECT,INSERT,UPDATE,DELETE,CREATE,DROP,ALTER,CREATE TEMPORARY TABLES,LOCK TABLES"
 
     php_packages:
-    {% if ansible_distribution == 'Debian' and ansible_distribution_major_version == '10' %}
+    {if ansible_distribution == 'Debian' and ansible_distribution_major_version == '10'}
       - php7.3
       - php7.3-gd
       - php7.3-mysql
@@ -67,7 +67,7 @@
       - php7.3-xml
       - php7.3-cli
       - php7.3-xmlrpc
-    {% else %}
+    { else }
       - php7.0
       - php7.0-gd
       - php7.0-mysql
@@ -79,4 +79,4 @@
       - php7.0-xml
       - php7.0-cli
       - php7.0-xmlrpc
-    {% endif %}
+    { endif }
