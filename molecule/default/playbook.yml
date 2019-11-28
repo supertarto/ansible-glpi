@@ -82,6 +82,6 @@
 
     mariadb_users:
       - name: "{{ glpi_db_user }}"
-        host: "{{ glpi_db_host}}"
+        host: "{{ glpi_db_host }}"
         password: "{{ glpi_db_password }}"
         priv: "{{ glpi_db_name }}.*:SELECT,INSERT,UPDATE,DELETE,CREATE,DROP,ALTER,CREATE TEMPORARY TABLES,LOCK TABLES"
