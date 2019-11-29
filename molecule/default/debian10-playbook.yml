@@ -15,40 +15,19 @@
     - role: supertarto.mariadb
     - role: supertarto.php
     - role: supertarto.glpi
-  tasks:
-    - name: set php_packages (Debian 10)
-      set_fact:
-        php_packages:
-          - php7.3
-          - php7.3-gd
-          - php7.3-mysql
-          - php7.3-curl
-          - php7.3-imap
-          - php7.3-json
-          - php7.3-ldap
-          - php7.3-mbstring
-          - php7.3-xml
-          - php7.3-cli
-          - php7.3-xmlrpc
-      when: ansible_distribution == 'Debian' and ansible_distribution_release == 'buster'
-
-    - name: set php_packages (Debian 9)
-      set_fact:
-        php_packages:
-          - php7.0
-          - php7.0-gd
-          - php7.0-mysql
-          - php7.0-curl
-          - php7.0-imap
-          - php7.0-json
-          - php7.0-ldap
-          - php7.0-mbstring
-          - php7.0-xml
-          - php7.0-cli
-          - php7.0-xmlrpc
-      when: ansible_distribution == 'Debian' and ansible_distribution_release == 'stretch
-
   vars:
+    php_packages:
+      - php7.3
+      - php7.3-gd
+      - php7.3-mysql
+      - php7.3-curl
+      - php7.3-imap
+      - php7.3-json
+      - php7.3-ldap
+      - php7.3-mbstring
+      - php7.3-xml
+      - php7.3-cli
+      - php7.3-xmlrpc
     glpi_db_host: "localhost"
     glpi_db_port: "3306"
     glpi_db_name: "glpi"
