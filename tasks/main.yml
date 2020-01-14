@@ -96,7 +96,7 @@
 
 - name: Configure and install database in GLPI
   command: >
-    "/usr/sbin/php {{ glpi_install_path }}/glpi/bin/console db:install -H {{ glpi_db_host }} -P {{ glpi_db_port }} -d {{ glpi_db_name }} -u
+    "/usr/bin/php {{ glpi_install_path }}/glpi/bin/console db:install -H {{ glpi_db_host }} -P {{ glpi_db_port }} -d {{ glpi_db_name }} -u
     {{ glpi_db_user }} -p {{ glpi_db_password }} -L {{ glpi_lang }}"
   when: not glpiinstalled.stat.exists
 
