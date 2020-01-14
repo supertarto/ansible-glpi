@@ -43,8 +43,6 @@
         documentroot: "/var/www/glpi"
         serveradmin: admin@localhost
         custom_param: |
-          ProxyRequests Off
-          ProxyPreserveHost On
           ErrorLog ${APACHE_LOG_DIR}/error.log
           CustomLog ${APACHE_LOG_DIR}/access.log combined
           LogLevel warn
