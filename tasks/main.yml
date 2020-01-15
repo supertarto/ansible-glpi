@@ -97,7 +97,7 @@
 - name: Configure and install database in GLPI
   command:
     cmd: >
-      "/usr/bin/php console db:install -H {{ glpi_db_host }} -P {{ glpi_db_port }} -d {{ glpi_db_name }} -u {{ glpi_db_user }}
+      "php console db:install -H {{ glpi_db_host }} -P {{ glpi_db_port }} -d {{ glpi_db_name }} -u {{ glpi_db_user }}
        -p {{ glpi_db_password }} -L {{ glpi_lang }}"
   args:
     chdir: "{{ glpi_install_path }}/glpi/bin/"
@@ -123,7 +123,7 @@
     group: "{{ glpi_web_group }}"
     mode: "0640"
     remote_src: true
-  when: glpi_plugins_dl_addr
+  when: glpi_plugins_dl_addr is defined
 
 - name: Changement des droits sur les dossiers de GLPI
   command:
