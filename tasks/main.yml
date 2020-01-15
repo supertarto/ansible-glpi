@@ -99,6 +99,7 @@
     cmd: >
       "/usr/bin/php console db:install -H {{ glpi_db_host }} -P {{ glpi_db_port }} -d {{ glpi_db_name }} -u {{ glpi_db_user }}
        -p {{ glpi_db_password }} -L {{ glpi_lang }}"
+  args:
     chdir: "{{ glpi_install_path }}/glpi/bin/"
   when: not glpiinstalled.stat.exists
 
