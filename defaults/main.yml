@@ -7,8 +7,8 @@ glpi_download_url: "https://github.com/glpi-project/glpi/releases/download/{{ gl
 
 glpi_web_owner: "www-data"
 glpi_web_group: "www-data"
-glpi_system_user: "root"
-glpi_system_group: "root"
+glpi_system_user: "www-data"
+glpi_system_group: "www-data"
 
 glpi_install_path: /var/www
 glpi_config_dir: "/etc/glpi"
