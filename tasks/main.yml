@@ -44,7 +44,7 @@
 
 - name: Check if GLPI /files already exists
   stat:
-    path: "{{ glpi_install_path }}/glpi/config/"
+    path: "{{ glpi_install_path }}/glpi/files/"
   register: glpi_files_exists
 
 - name: Custom data directory (if /files don't exists)
