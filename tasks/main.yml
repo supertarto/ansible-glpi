@@ -116,7 +116,7 @@
     state: absent
 
 - name: Download plugins
-  get_url: 
+  get_url:
     url: "{{ item }}"
     dest: "{{ glpi_install_path }}/glpi/plugins"
   with_items: "{{ glpi_plugins_dl_addr }}"
