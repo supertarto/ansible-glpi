@@ -115,25 +115,19 @@
     path: "{{ glpi_install_path }}/glpi/install/"
     state: absent
 
-- name: Copy plugins
+- name: Download plugins
+  get_url: 
+    url: "{{ item }}"
+    dest: "{{ glpi_install_path }}/glpi/plugins"
+  with_items: "{{ glpi_plugins_dl_addr }}"
+  when: glpi_plugins_dl_addr is defined
+
+- name: Unarchive plugins
   unarchive:
-    src: "{{ glpi_plugins_dl_addr }}"
+    src: "{{ glpi_install_path }}/glpi/plugins/{{ item }}"
     dest: "{{ glpi_install_path }}/glpi/plugins"
     owner: "{{ glpi_web_owner }}"
     group: "{{ glpi_web_group }}"
-    mode: "0640"
     remote_src: true
+  with_items: "{{ glpi_plugins_tar_name }}"
   when: glpi_plugins_dl_addr is defined
-
-- name: Changement des droits sur les dossiers de GLPI
-  command:
-    cmd: find {{ glpi_install_path }}/glpi/ -type d -exec chmod -c 0750 {} \;
-  register: chmod_result
-  changed_when: "chmod_result.stdout != \"\""
-
-
-- name: Changement des droits sur les fichiers de GLPI
-  command:
-    cmd: find {{ glpi_install_path }}/glpi/ -type f -exec chmod -c 0640 {} \;
-  register: chmod_result
-  changed_when: "chmod_result.stdout != \"\""
