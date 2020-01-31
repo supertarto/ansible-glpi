@@ -14,39 +14,6 @@
     validate_certs: false
   when: not glpiinstalled.stat.exists or glpi_update
 
-- name: Configure and install database in GLPI
-  command:
-    cmd: >
-      php bin/console db:install -H {{ glpi_db_host }} -P {{ glpi_db_port }} -d {{ glpi_db_name }} -u {{ glpi_db_user }}
-       -p {{ glpi_db_password }} -L {{ glpi_lang }} -q
-  args:
-    chdir: "{{ glpi_install_path }}/glpi/"
-  when: not glpiinstalled.stat.exists
-
-- name: Update database
-  command:
-    cmd: php bin/console db:update
-  args:
-    chdir: "{{ glpi_install_path }}/glpi/"
-  when: glpi_update
-
-- name: Check if config_db.php exists
-  stat:
-    path: "{{ glpi_install_path }}/glpi/config/config_db.php"
-  register: glpiconfigdb
-
-- name: Change config_db.php owner
-  file:
-    path: "{{ glpi_install_path }}/glpi/config/config_db.php"
-    owner: "{{ glpi_web_owner }}"
-    group: "{{ glpi_web_group }}"
-  when: glpiconfigdb.stat.exists
-
-- name: Delete /install directory
-  file:
-    path: "{{ glpi_install_path }}/glpi/install/"
-    state: absent
-
 - name: Download plugins
   get_url:
     url: "{{ item }}"
