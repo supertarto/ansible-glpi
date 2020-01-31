@@ -14,86 +14,6 @@
     validate_certs: false
   when: not glpiinstalled.stat.exists or glpi_update
 
-- name: Check if GLPI /config already exists
-  stat:
-    path: "{{ glpi_install_path }}/glpi/config/"
-  register: glpi_config_exists
-
-- name: Custom configuration directory
-  file:
-    path: "{{ glpi_config_dir }}"
-    state: directory
-    owner: "{{ glpi_system_user }}"
-    group: "{{ glpi_system_group }}"
-    mode: "0640"
-
-- name: Create custom configuration directory and copy /config (if exists)
-  copy:
-    src: "{{ glpi_install_path }}/glpi/config/"
-    dest: "{{ glpi_config_dir }}"
-    owner: "{{ glpi_system_user }}"
-    group: "{{ glpi_system_group }}"
-    mode: "0640"
-    remote_src: true
-  when: glpi_config_exists.stat.exists
-
-- name: Delete old config directory
-  file:
-    path: "{{ glpi_install_path }}/glpi/config/"
-    state: absent
-
-- name: Check if GLPI /files already exists
-  stat:
-    path: "{{ glpi_install_path }}/glpi/files/"
-  register: glpi_files_exists
-
-- name: Custom data directory (if /files don't exists)
-  file:
-    path: "{{ glpi_data_dir }}"
-    state: directory
-    owner: "{{ glpi_system_user }}"
-    group: "{{ glpi_system_group }}"
-    mode: "0640"
-
-- name: Create custom data directory and copy /files (if exists)
-  copy:
-    src: "{{ glpi_install_path }}/glpi/files/"
-    dest: "{{ glpi_data_dir }}"
-    owner: "{{ glpi_system_user }}"
-    group: "{{ glpi_system_group }}"
-    mode: "0640"
-    remote_src: true
-  when: glpi_files_exists.stat.exists
-
-- name: Delete old data directory
-  file:
-    path: "{{ glpi_install_path }}/glpi/files/"
-    state: absent
-
-- name: Create custom log directory
-  file:
-    path: "{{ glpi_log_dir }}"
-    state: directory
-    owner: "{{ glpi_system_user }}"
-    group: "{{ glpi_system_group }}"
-    mode: "0640"
-
-- name: Create inc/downstream.php
-  template:
-    src: downstream.php.j2
-    dest: "{{ glpi_install_path }}/glpi/inc/downstream.php"
-    owner: "{{ glpi_web_owner }}"
-    group: "{{ glpi_web_group }}"
-    mode: "0640"
-
-- name: Create local_define.php
-  template:
-    src: local_define.php.j2
-    dest: "{{ glpi_config_dir }}/local_define.php"
-    owner: "{{ glpi_system_user }}"
-    group: "{{ glpi_system_group }}"
-    mode: "0640"
-
 - name: Configure and install database in GLPI
   command:
     cmd: >
@@ -131,3 +51,15 @@
     remote_src: true
   with_items: "{{ glpi_plugins_tar_name }}"
   when: glpi_plugins_dl_addr is defined
+
+- name: Changement des droits sur les dossiers de GLPI
+  command: find /var/www/glpi -type d -exec chmod -c 0750 {} \;
+  register: chmod_result
+  changed_when: "chmod_result.stdout != \"\""
+  become: true
+
+- name: Changement des droits sur les fichiers de GLPI
+  command: find /var/www/glpi -type f -exec chmod -c 0640 {} \;
+  register: chmod_result
+  changed_when: "chmod_result.stdout != \"\""
+  become: true
