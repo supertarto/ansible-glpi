@@ -32,15 +32,15 @@
 
 - name: Check if config_db.php exists
   stat:
-    path: "{{ glpi_install_path }}/glpi/config_db.php"
+    path: "{{ glpi_install_path }}/glpi/config/config_db.php"
   register: glpiconfigdb
 
 - name: Change config_db.php owner
   file:
-    path: "{{ glpi_install_path }}/glpi/config_db.php"
+    path: "{{ glpi_install_path }}/glpi/config/config_db.php"
     owner: "{{ glpi_web_owner }}"
     group: "{{ glpi_web_group }}"
-  when: glpiconfigdb
+  when: glpiconfigdb.stat.exists
 
 - name: Delete /install directory
   file:
