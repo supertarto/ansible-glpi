@@ -34,6 +34,18 @@
   file:
     path: "{{ glpi_install_path }}/glpi/install/"
     state: absent
+    
+- name: Changement des droits sur les dossiers de GLPI
+  command: find /var/www/glpi -type d -exec chmod -c 0750 {} \;
+  register: chmod_result
+  changed_when: "chmod_result.stdout != \"\""
+  become: true
+
+- name: Changement des droits sur les fichiers de GLPI
+  command: find /var/www/glpi -type f -exec chmod -c 0640 {} \;
+  register: chmod_result
+  changed_when: "chmod_result.stdout != \"\""
+  become: true
 
 - name: Download plugins
   get_url:
@@ -52,14 +64,4 @@
   with_items: "{{ glpi_plugins_tar_name }}"
   when: glpi_plugins_dl_addr is defined
 
-- name: Changement des droits sur les dossiers de GLPI
-  command: find /var/www/glpi -type d -exec chmod -c 0750 {} \;
-  register: chmod_result
-  changed_when: "chmod_result.stdout != \"\""
-  become: true
 
-- name: Changement des droits sur les fichiers de GLPI
-  command: find /var/www/glpi -type f -exec chmod -c 0640 {} \;
-  register: chmod_result
-  changed_when: "chmod_result.stdout != \"\""
-  become: true
