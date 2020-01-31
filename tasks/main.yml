@@ -34,7 +34,7 @@
   file:
     path: "{{ glpi_install_path }}/glpi/install/"
     state: absent
-    
+
 - name: Changement des droits sur les dossiers de GLPI
   command: find /var/www/glpi -type d -exec chmod -c 0750 {} \;
   register: chmod_result
@@ -63,5 +63,3 @@
     remote_src: true
   with_items: "{{ glpi_plugins_tar_name }}"
   when: glpi_plugins_dl_addr is defined
-
-
