@@ -1,5 +1,6 @@
 # Ansible GLPI
 [![Build Status](https://travis-ci.org/supertarto/ansible-glpi.svg?branch=master)](https://travis-ci.org/supertarto/ansible-glpi)
+
 An Ansible Role to install and configure GLPI. You must have a Web Server, php and MariaDB on your server. This role is tested only with Apache.
 
 ## Requirements
