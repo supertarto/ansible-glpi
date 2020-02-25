@@ -7,10 +7,9 @@ env:
     - ROLE_NAME: glpi
   matrix:
     - MOLECULE_DISTRIB: debian10:latest
-      MOLECULE_PLAYBOOK: debian10-playbook.yml
 
 install:
-  - pip install molecule docker
+  - pip install molecule yamllint ansible-lint docker
 
 before_script:
   - cd ../

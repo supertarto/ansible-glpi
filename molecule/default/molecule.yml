@@ -3,10 +3,9 @@ dependency:
   name: galaxy
 driver:
   name: docker
-lint:
-  name: yamllint
-  options:
-    config-file: molecule/default/yaml-lint.yml
+lint: |
+  yamllint .
+  ansible-lint
 platforms:
   - name: instance
     image: "thetarto/ansible-${MOLECULE_DISTRIB}"
@@ -17,11 +16,3 @@ platforms:
     pre_build_image: true
 provisioner:
   name: ansible
-  lint:
-    name: ansible-lint
-  playbooks:
-    converge: ${MOLECULE_PLAYBOOK}
-verifier:
-  name: testinfra
-  lint:
-    name: flake8
