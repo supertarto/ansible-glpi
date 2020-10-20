@@ -14,6 +14,31 @@
     validate_certs: false
   when: not glpiinstalled.stat.exists or glpi_update
 
+- name: Automatic installation
+  command:
+    chdir: "{{ glpi_install_path }}"
+    cmd: "php bin/console -n db:install -H {{ glpi_db_host }} -P {{ glpi_db_port }} -d {{ glpi_db_name }} -u {{ glpi_db_user }} -p {{ glpi_db_password }}"
+  when: ( not glpiinstalled.stat.exists or glpi_update ) and glpi_auto_install
+  notify:
+    - Remove install.php
+    - Add htaccess
+
+- name: Set permisions to files directory
+  file:
+    path: "{{ glpi_install_path }}/glpi/files"
+    recurse: yes
+    owner: "{{ glpi_web_owner }}"
+    group: "{{ glpi_web_group }}"
+  when: not glpiinstalled.stat.exists or glpi_update
+
+- name: Set permisions to config directory
+  file:
+    path: "{{ glpi_install_path }}/glpi/config"
+    recurse: yes
+    owner: "{{ glpi_web_owner }}"
+    group: "{{ glpi_web_group }}"
+  when: not glpiinstalled.stat.exists or glpi_update
+
 - name: Download plugins
   get_url:
     url: "{{ item }}"

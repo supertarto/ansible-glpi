@@ -1,0 +1,13 @@
+---
+- name: Remove install.php
+  file:
+    path: "{{ glpi_install_path }}/glpi/install/install.php"
+    state: absent
+
+- name: Add htaccess
+  template:
+    src: "htaccess.j2"
+    dest: "{{ glpi_install_path }}/glpi/install/.htaccess"
+    owner: "{{ glpi_web_owner }}"
+    group: "{{ glpi_web_group }}"
+    mode: "0440"

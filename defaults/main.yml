@@ -2,6 +2,7 @@
 glpi_version: 9.4.5
 glpi_version_package: glpi-9.4.5.tgz
 
+glpi_auto_install: false
 glpi_update: false
 glpi_download_url: "https://github.com/glpi-project/glpi/releases/download/{{ glpi_version }}/{{ glpi_version_package }}"
 
