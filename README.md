@@ -15,6 +15,10 @@ The GLPI version and the package name.
 glpi_version: 9.4.5
 glpi_version_package: glpi-9.4.5.tgz
 ```
+Set to "true" if you want to perform the final installation automatically. Else, you'll have to end it with your web browser.
+```yml
+glpi_auto_install: false
+```
 Set glpi_update to "true" if you want to force an reinstallation. The URL use the glpi_version an the package name.
 ```yml
 glpi_update: false
