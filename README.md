@@ -4,7 +4,33 @@
 An Ansible Role to install and configure GLPI. You must have a Web Server, php and MariaDB on your server. This role is tested only with Apache.
 
 ## Requirements
-A web server, php and MariaDB. You can use supertarto.apache, supertarto.mariadb and supertarto.php
+
+The prerequisites recommanded on the official GLPI docummentation are:
+
+* A web server (Apache, Nginx, IIS, etc.)
+* MariaDB >= 10.0 or MySQL >= 5.6
+* PHP 7.2 or higher
+* PHP extensions (mandatory): 
+    * ctype
+    * curl
+    * gd (picture generation)
+    * iconv
+    * intl
+    * json
+    * mbstring
+    * mysqli
+    * session
+    * simplexml
+    * zlib
+* PHP extensions (optionnal)
+    * exif (security enhancement on images validation)
+    * imap (mail collector and users authentication)
+    * ldap (users authentication)
+    * openssl (encrypted communication)
+    * sodium (performances enhancement on sensitive data encryption/decryption)
+    * zip and bz2 (installation of zip and bz2 packages from marketplace)
+
+You can use supertarto.apache, supertarto.mariadb and supertarto.php to install those beforehand with ansible
 
 ## Tested plateform
 * Debian 10 (Buster)
