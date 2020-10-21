@@ -15,7 +15,7 @@ The GLPI version and the package name.
 glpi_version: 9.4.5
 glpi_version_package: glpi-9.4.5.tgz
 ```
-Set to "true" if you want to perform the final installation automatically. Else, you'll have to end it with your web browser.
+Set to "true" if you want to perform the final installation automatically. It configure the database for the first time. Else, you'll have to end it with your web browser. Don't use it when you update and your database is already configured. The task will crash, cause it's not meant for update.
 ```yml
 glpi_auto_install: false
 ```
