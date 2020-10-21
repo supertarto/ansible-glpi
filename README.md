@@ -94,6 +94,11 @@ glpi_db_password: "changeit!"
       - php7.3-xml
       - php7.3-cli
       - php7.3-xmlrpc
+      - php7.3-intl
+      - php-apcu
+      - php-cas
+      - php7.3-zip
+      - php7.3-bz2
     glpi_db_host: "localhost"
     glpi_db_port: "3306"
     glpi_db_name: "glpi"
