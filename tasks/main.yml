@@ -16,7 +16,7 @@
 
 - name: Automatic installation
   command: "php bin/console -n db:install -H {{ glpi_db_host }} -P {{ glpi_db_port }} -d {{ glpi_db_name }} -u {{ glpi_db_user }} -p {{ glpi_db_password }}"
-  args:  
+  args:
     chdir: "{{ glpi_install_path }}/glpi"
   when: ( not glpiinstalled.stat.exists or glpi_update ) and glpi_auto_install
   notify:
