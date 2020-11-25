@@ -1,5 +1,5 @@
 # Ansible GLPI
-[![Build Status](https://travis-ci.com/supertarto/ansible-glpi.svg?branch=master)](https://travis-ci.com/supertarto/ansible-glpi)
+[![CI](https://github.com/supertarto/ansible-glpi/workflows/CI/badge.svg?event=push)](https://github.com/supertarto/ansible-glpi/actions?query=workflow%3ACI)
 
 An Ansible Role to install and configure GLPI. You must have a Web Server, php and MariaDB on your server. This role is tested only with Apache.
 
@@ -10,7 +10,7 @@ The prerequisites recommanded on the official GLPI docummentation are:
 * A web server (Apache, Nginx, IIS, etc.)
 * MariaDB >= 10.0 or MySQL >= 5.6
 * PHP 7.2 or higher
-* PHP extensions (mandatory): 
+* PHP extensions (mandatory):
     * ctype
     * curl
     * gd (picture generation)
@@ -36,7 +36,7 @@ You can use supertarto.apache, supertarto.mariadb and supertarto.php to install 
 * Debian 10 (Buster)
 
 ## Role variables
-The GLPI version and the package name. 
+The GLPI version and the package name.
 ```yml
 glpi_version: 9.4.5
 glpi_version_package: glpi-9.4.5.tgz
