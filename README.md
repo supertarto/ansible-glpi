@@ -1,5 +1,5 @@
 # Ansible GLPI
-[![CI](https://github.com/supertarto/ansible-glpi/workflows/CI/badge.svg?event=push)](https://github.com/supertarto/ansible-glpi/actions?query=workflow%3ACI)
+[![CI](https://github.com/supertarto/ansible-glpi/actions/workflows/ci.yml/badge.svg)](https://github.com/supertarto/ansible-glpi/actions/workflows/ci.yml)
 
 An Ansible Role to install and configure GLPI. You must have a Web Server, php and MariaDB on your server. This role is tested only with Apache.
 
@@ -34,12 +34,15 @@ You can use supertarto.apache, supertarto.mariadb and supertarto.php to install 
 
 ## Tested plateform
 * Debian 10 (Buster)
+* Debian 11 (Bullseye)
+* Debian 12 (Bookworm)
+
 
 ## Role variables
 The GLPI version and the package name.
 ```yml
-glpi_version: 9.4.5
-glpi_version_package: glpi-9.4.5.tgz
+glpi_version: 10.0.16
+glpi_version_package: glpi-10.0.16.tgz
 ```
 Set to "true" if you want to perform the final installation automatically. It configure the database for the first time. Else, you'll have to end it with your web browser. Don't use it when you update and your database is already configured. The task will crash, cause it's not meant for update.
 ```yml
@@ -56,14 +59,7 @@ glpi_web_owner: "www-data"
 glpi_web_group: "www-data"
 glpi_install_path: /var/www
 ```
-List of plugin adress to download, and list of file to unarchive.
-```yml
-glpi_plugins_dl_addr:
-  - "https://github.com/fusioninventory/fusioninventory-for-glpi/releases/download/glpi9.4%2B2.3/fusioninventory-9.4+2.3.tar.bz2"
 
-glpi_plugins_tar_name:
-  - fusioninventory-9.4+2.3.tar.bz2
-```
 Information about the GLPI database.
 ```yml
 glpi_db_host: "localhost"
@@ -83,22 +79,22 @@ glpi_db_password: "changeit!"
     - role: supertarto.glpi
   vars:
     php_packages:
-      - php7.3
-      - php7.3-gd
-      - php7.3-mysql
-      - php7.3-curl
-      - php7.3-imap
-      - php7.3-json
-      - php7.3-ldap
-      - php7.3-mbstring
-      - php7.3-xml
-      - php7.3-cli
-      - php7.3-xmlrpc
-      - php7.3-intl
+      - php8.2
+      - php8.2-gd
+      - php8.2-mysql
+      - php8.2-curl
+      - php8.2-imap
+      - php8.2-json
+      - php8.2-ldap
+      - php8.2-mbstring
+      - php8.2-xml
+      - php8.2-cli
+      - php8.2-xmlrpc
+      - php8.2-intl
       - php-apcu
       - php-cas
-      - php7.3-zip
-      - php7.3-bz2
+      - php8.2-zip
+      - php8.2-bz2
     glpi_db_host: "localhost"
     glpi_db_port: "3306"
     glpi_db_name: "glpi"
@@ -135,7 +131,7 @@ glpi_db_password: "changeit!"
 ```
 ## Installation
 ```
-ansible-galaxy install supertarto.glpi
+ansible-galaxy role install supertarto.glpi
 ```
 ## License
 GPL V3.0
