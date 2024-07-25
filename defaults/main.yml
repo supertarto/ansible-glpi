@@ -1,6 +1,6 @@
 ---
-glpi_version: 9.4.5
-glpi_version_package: glpi-9.4.5.tgz
+glpi_version: 10.0.16
+glpi_version_package: glpi-10.0.16.tgz
 
 glpi_auto_install: false
 glpi_update: false
@@ -9,12 +9,6 @@ glpi_download_url: "https://github.com/glpi-project/glpi/releases/download/{{ gl
 glpi_web_owner: "www-data"
 glpi_web_group: "www-data"
 glpi_install_path: /var/www
-
-glpi_plugins_dl_addr:
-  - "https://github.com/fusioninventory/fusioninventory-for-glpi/releases/download/glpi9.4%2B2.3/fusioninventory-9.4+2.3.tar.bz2"
-
-glpi_plugins_tar_name:
-  - fusioninventory-9.4+2.3.tar.bz2
 
 glpi_db_host: "localhost"
 glpi_db_port: "3306"

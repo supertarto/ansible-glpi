@@ -38,20 +38,3 @@
     owner: "{{ glpi_web_owner }}"
     group: "{{ glpi_web_group }}"
   when: not glpiinstalled.stat.exists or glpi_update
-
-- name: Download plugins
-  get_url:
-    url: "{{ item }}"
-    dest: "{{ glpi_install_path }}/glpi/plugins"
-  with_items: "{{ glpi_plugins_dl_addr }}"
-  when: glpi_plugins_dl_addr is defined
-
-- name: Unarchive plugins
-  unarchive:
-    src: "{{ glpi_install_path }}/glpi/plugins/{{ item }}"
-    dest: "{{ glpi_install_path }}/glpi/plugins"
-    owner: "{{ glpi_web_owner }}"
-    group: "{{ glpi_web_group }}"
-    remote_src: true
-  with_items: "{{ glpi_plugins_tar_name }}"
-  when: glpi_plugins_dl_addr is defined

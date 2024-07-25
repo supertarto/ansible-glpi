@@ -17,22 +17,23 @@
     - role: supertarto.glpi
   vars:
     php_packages:
-      - php7.3
-      - php7.3-gd
-      - php7.3-mysql
-      - php7.3-curl
-      - php7.3-imap
-      - php7.3-json
-      - php7.3-ldap
-      - php7.3-mbstring
-      - php7.3-xml
-      - php7.3-cli
-      - php7.3-xmlrpc
-      - php7.3-intl
+      - php{{php_default_version_debian}}
+      - php{{php_default_version_debian}}-gd
+      - php{{php_default_version_debian}}-mysql
+      - php{{php_default_version_debian}}-curl
+      - php{{php_default_version_debian}}-imap
+      - php{{php_default_version_debian}}-json
+      - php{{php_default_version_debian}}-ldap
+      - php{{php_default_version_debian}}-mbstring
+      - php{{php_default_version_debian}}-xml
+      - php{{php_default_version_debian}}-cli
+      - php{{php_default_version_debian}}-xmlrpc
+      - php{{php_default_version_debian}}-intl
       - php-apcu
       - php-cas
-      - php7.3-zip
-      - php7.3-bz2
+      - php{{php_default_version_debian}}-zip
+      - php{{php_default_version_debian}}-bz2
+
     glpi_auto_install: true
     glpi_db_host: "localhost"
     glpi_db_port: "3306"
