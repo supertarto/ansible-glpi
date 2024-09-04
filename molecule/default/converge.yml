@@ -23,7 +23,7 @@
       - php{{php_default_version_debian}}-mysql
       - php{{php_default_version_debian}}-curl
       - php{{php_default_version_debian}}-imap
-      - php{{php_default_version_debian}}-json
+      - php-json
       - php{{php_default_version_debian}}-ldap
       - php{{php_default_version_debian}}-mbstring
       - php{{php_default_version_debian}}-xml
