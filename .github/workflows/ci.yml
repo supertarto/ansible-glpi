@@ -41,7 +41,6 @@ jobs:
     strategy:
       matrix:
         distrib:
-          - debian10
           - debian11
           - debian12
 
