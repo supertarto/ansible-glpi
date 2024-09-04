@@ -8,8 +8,8 @@ An Ansible Role to install and configure GLPI. You must have a Web Server, php a
 The prerequisites recommanded on the official GLPI docummentation are:
 
 * A web server (Apache, Nginx, IIS, etc.)
-* MariaDB >= 10.0 or MySQL >= 5.6
-* PHP 7.2 or higher
+* MariaDB >= 10.2 or MySQL >= 5.7
+* PHP 7.4 or higher
 * PHP extensions (mandatory):
     * ctype
     * curl
@@ -33,7 +33,6 @@ The prerequisites recommanded on the official GLPI docummentation are:
 You can use supertarto.apache, supertarto.mariadb and supertarto.php to install those beforehand with ansible
 
 ## Tested plateform
-* Debian 10 (Buster)
 * Debian 11 (Bullseye)
 * Debian 12 (Bookworm)
 
