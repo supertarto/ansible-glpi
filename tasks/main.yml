@@ -6,27 +6,27 @@
 
 - block:
 
-  - name: Check if GLPI Backup already exists
-    stat:
-      path: "{{ glpi_install_path }}/glpi-bck"
-    register: glpibackup
+    - name: Check if GLPI Backup already exists
+      stat:
+        path: "{{ glpi_install_path }}/glpi-bck"
+      register: glpibackup
 
-  - name: Remove Old GLPI Backup folder before update
-    ansible.builtin.file:
-      path: "{{ glpi_install_path }}/glpi-bck"
-      state: absent
-    when: glpibackup
+    - name: Remove Old GLPI Backup folder before update
+      ansible.builtin.file:
+        path: "{{ glpi_install_path }}/glpi-bck"
+        state: absent
+      when: glpibackup
 
-  - name: BackUp GLPI Folder
-    ansible.builtin.copy:
-      remote_src: true
-      src: "{{ glpi_install_path }}/glpi"
-      dest: "{{ glpi_install_path }}/glpi-bck"
+    - name: BackUp GLPI Folder
+      ansible.builtin.copy:
+        remote_src: true
+        src: "{{ glpi_install_path }}/glpi"
+        dest: "{{ glpi_install_path }}/glpi-bck"
 
-  - name: Remove GLPI folder before update
-    ansible.builtin.file:
-      path: "{{ glpi_install_path }}/glpi"
-      state: absent
+    - name: Remove GLPI folder before update
+      ansible.builtin.file:
+        path: "{{ glpi_install_path }}/glpi"
+        state: absent
 
   when: glpi_update and glpiinstalled
 
@@ -51,17 +51,17 @@
 
 - block:
 
-  - name: Copy files directory from backup to new version
-    ansible.builtin.copy:
-      remote_src: true
-      src: "{{ glpi_install_path }}/glpi-bck/files"
-      dest: "{{ glpi_install_path }}/glpi/files"
+    - name: Copy files directory from backup to new version
+      ansible.builtin.copy:
+        remote_src: true
+        src: "{{ glpi_install_path }}/glpi-bck/files"
+        dest: "{{ glpi_install_path }}/glpi/files"
 
-  - name: Copy config directory from backup to new version
-    ansible.builtin.copy:
-      remote_src: true
-      src: "{{ glpi_install_path }}/glpi-bck/config"
-      dest: "{{ glpi_install_path }}/glpi/config"
+    - name: Copy config directory from backup to new version
+      ansible.builtin.copy:
+        remote_src: true
+        src: "{{ glpi_install_path }}/glpi-bck/config"
+        dest: "{{ glpi_install_path }}/glpi/config"
 
   when: glpi_update and glpiinstalled
 
