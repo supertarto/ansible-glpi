@@ -40,15 +40,6 @@
     validate_certs: false
   when: not glpiinstalled.stat.exists or glpi_update
 
-- name: Automatic installation
-  command: "php bin/console -n db:install -H {{ glpi_db_host }} -P {{ glpi_db_port }} -d {{ glpi_db_name }} -u {{ glpi_db_user }} -p {{ glpi_db_password }}"
-  args:
-    chdir: "{{ glpi_install_path }}/glpi"
-  when: ( not glpiinstalled.stat.exists or glpi_update ) and glpi_auto_install
-  notify:
-    - Remove install.php
-    - Add htaccess
-
 - block:
 
     - name: Copy files directory from backup to new version
@@ -64,6 +55,15 @@
         dest: "{{ glpi_install_path }}/glpi/config"
 
   when: glpi_update and glpiinstalled
+
+- name: Automatic installation
+  command: "php bin/console -n db:install -H {{ glpi_db_host }} -P {{ glpi_db_port }} -d {{ glpi_db_name }} -u {{ glpi_db_user }} -p {{ glpi_db_password }}"
+  args:
+    chdir: "{{ glpi_install_path }}/glpi"
+  when: ( not glpiinstalled.stat.exists or glpi_update ) and glpi_auto_install
+  notify:
+    - Remove install.php
+    - Add htaccess
 
 - name: Set permisions to files directory
   file:
