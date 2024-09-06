@@ -4,6 +4,32 @@
     path: "{{ glpi_install_path }}/glpi"
   register: glpiinstalled
 
+- block:
+
+  - name: Check if GLPI Backup already exists
+    stat:
+      path: "{{ glpi_install_path }}/glpi-bck"
+    register: glpibackup
+
+  - name: Remove Old GLPI Backup folder before update
+    ansible.builtin.file:
+      path: "{{ glpi_install_path }}/glpi-bck"
+      state: absent
+    when: glpibackup
+
+  - name: BackUp GLPI Folder
+    ansible.builtin.copy:
+      remote_src: true
+      src: "{{ glpi_install_path }}/glpi"
+      dest: "{{ glpi_install_path }}/glpi-bck"
+
+  - name: Remove GLPI folder before update
+    ansible.builtin.file:
+      path: "{{ glpi_install_path }}/glpi"
+      state: absent
+
+  when: glpi_update and glpiinstalled
+
 - name: Download and extract GLPI
   unarchive:
     src: "{{ glpi_download_url }}"
@@ -22,6 +48,22 @@
   notify:
     - Remove install.php
     - Add htaccess
+
+- block:
+
+  - name: Copy files directory from backup to new version
+    ansible.builtin.copy:
+      remote_src: true
+      src: "{{ glpi_install_path }}/glpi-bck/files"
+      dest: "{{ glpi_install_path }}/glpi/files"
+
+  - name: Copy config directory from backup to new version
+    ansible.builtin.copy:
+      remote_src: true
+      src: "{{ glpi_install_path }}/glpi-bck/config"
+      dest: "{{ glpi_install_path }}/glpi/config"
+
+  when: glpi_update and glpiinstalled
 
 - name: Set permisions to files directory
   file:

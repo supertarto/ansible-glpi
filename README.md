@@ -105,7 +105,7 @@ glpi_db_password: "changeit!"
       - listen_ip: "*"
         listen_port: 80
         server_name: host1
-        documentroot: "/var/www/glpi"
+        documentroot: "/var/www/glpi/public"
         serveradmin: admin@localhost
         custom_param: |
           ErrorLog ${APACHE_LOG_DIR}/error.log
