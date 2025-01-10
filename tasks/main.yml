@@ -4,87 +4,98 @@
     path: "{{ glpi_install_path }}/glpi"
   register: glpiinstalled
 
-- block:
+- name: Download and extract GLPI and configure inc/downstream.php file
+  when: not glpiinstalled.stat.exists or glpi_update
+  block:
 
-    - name: Check if GLPI Backup already exists
-      stat:
-        path: "{{ glpi_install_path }}/glpi-bck"
-      register: glpibackup
-
-    - name: Remove Old GLPI Backup folder before update
-      ansible.builtin.file:
-        path: "{{ glpi_install_path }}/glpi-bck"
-        state: absent
-      when: glpibackup
-
-    - name: BackUp GLPI Folder
-      ansible.builtin.copy:
-        remote_src: true
-        src: "{{ glpi_install_path }}/glpi/"
-        dest: "{{ glpi_install_path }}/glpi-bck"
-
-    - name: Remove GLPI folder before update
-      ansible.builtin.file:
+    - name: Remove GLPI web files
+      file:
         path: "{{ glpi_install_path }}/glpi"
         state: absent
-
-  when: glpi_update and glpiinstalled
-
-- name: Download and extract GLPI
-  unarchive:
-    src: "{{ glpi_download_url }}"
-    remote_src: true
-    dest: "{{ glpi_install_path }}"
-    owner: "{{ glpi_web_owner }}"
-    group: "{{ glpi_web_group }}"
-    validate_certs: false
-  when: not glpiinstalled.stat.exists or glpi_update
-
-- block:
-
-    - name: Copy files directory from backup to new version
-      ansible.builtin.copy:
+    
+    - name: Download and extract
+      unarchive:
+        src: "{{ glpi_download_url }}"
         remote_src: true
-        src: "{{ glpi_install_path }}/glpi-bck/files/"
-        dest: "{{ glpi_install_path }}/glpi/files"
+        dest: "{{ glpi_install_path }}"
+        validate_certs: false
+        owner: "{{ glpi_download_owner }}"
+        group: "{{ glpi_download_group }}"
 
-    - name: Copy config directory from backup to new version
-      ansible.builtin.copy:
-        remote_src: true
-        src: "{{ glpi_install_path }}/glpi-bck/config/"
-        dest: "{{ glpi_install_path }}/glpi/config"
+    - name: Configure inc/downstream.php file
+      template:
+        src: "inc/downstream.php.j2"
+        dest: "{{ glpi_install_path }}/glpi/inc/downstream.php"
+        owner: "{{ glpi_web_owner }}"
+        group: "{{ glpi_web_group }}"
+        mode: 0644
 
-    - name: Automatic update
-      command: "php bin/console db:update --no-telemetry"
-      args:
-        chdir: "{{ glpi_install_path }}/glpi"
-      notify:
-        - Remove install.php
-        - Add htaccess
+- name: Configuring files and directories locations
+  when: ( not glpiinstalled.stat.exists )
+  block:
 
-  when: glpi_update and glpiinstalled
+    - name: 'Create {{ glpi_config_dir }}, {{ glpi_var_dir }} and {{ glpi_var_dir }} directories'
+      file:
+        path: "{{ item }}"
+        state: directory
+        owner: "{{ glpi_web_owner }}"
+        group: "{{ glpi_web_group }}"
+        mode: 0755
+      loop:
+        - '{{ glpi_var_dir }}'  
+        - '{{ glpi_log_dir }}'  
+        - '{{ glpi_config_dir }}'  
+
+    - name: 'Configure {{ glpi_config_dir }}local_define.php file'
+      template:
+        src: "etc/glpi/local_define.php.j2"
+        dest: "{{ glpi_config_dir }}/local_define.php"
+        owner: "{{ glpi_web_owner }}"
+        group: "{{ glpi_web_group }}"
+        mode: 0644
+
+    - name: 'Copy config and files directories to config location'
+      copy:
+        src: "{{ glpi_install_path }}/glpi/{{ item.src }}/"
+        dest: "{{ item.dest }}/"
+        remote_src: True
+        owner: "{{ glpi_web_owner }}"
+        group: "{{ glpi_web_group }}"
+        mode: preserve
+      loop: 
+        - { src: config, dest: "{{ glpi_config_dir }}"}
+        - { src: files, dest: "{{ glpi_var_dir }}"}
+
+    - name: 'Remove config and files directories from default location'
+      file:
+        path: "{{ glpi_install_path }}/glpi/{{ item }}"
+        state: absent
+      loop: 
+        - config
+        - files
+
+- name: Automatic update
+  when: glpi_update
+  command: "php bin/console db:update --no-telemetry --no-interaction"
+  args:
+    chdir: "{{ glpi_install_path }}/glpi"
+  notify:
+    - Remove install.php
+    - Add htaccess
 
 - name: Automatic installation
   command: "php bin/console -n db:install -H {{ glpi_db_host }} -P {{ glpi_db_port }} -d {{ glpi_db_name }} -u {{ glpi_db_user }} -p {{ glpi_db_password }}"
   args:
     chdir: "{{ glpi_install_path }}/glpi"
-  when: ( not glpiinstalled.stat.exists ) and glpi_auto_install
   notify:
     - Remove install.php
     - Add htaccess
+  when: ( not glpiinstalled.stat.exists ) and glpi_auto_install
 
-- name: Set permisions to files directory
+- name: Fix permissions in log files
   file:
-    path: "{{ glpi_install_path }}/glpi/files"
-    recurse: true
+    path: "{{ glpi_log_dir }}"
+    state: directory
+    recurse: yes
     owner: "{{ glpi_web_owner }}"
     group: "{{ glpi_web_group }}"
-  when: not glpiinstalled.stat.exists or glpi_update
-
-- name: Set permisions to config directory
-  file:
-    path: "{{ glpi_install_path }}/glpi/config"
-    recurse: true
-    owner: "{{ glpi_web_owner }}"
-    group: "{{ glpi_web_group }}"
-  when: not glpiinstalled.stat.exists or glpi_update
